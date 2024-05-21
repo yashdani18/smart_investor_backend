@@ -1,0 +1,7 @@
+.env
+
+config/
+
+node_modules/
+
+test.js
