@@ -24,4 +24,4 @@ jobs:
       - name: pull image from dockerhub
         run: docker pull yashdani27/si_backend:latest
       - name: Run Docker container
-        run: docker run -d -p 5000:5000 --name si-backend-container -e MONGODB='${{ secrets.MONGO_PASSWORD }}' -e DB_NAME='${{ secrets.DB_NAME }}' -e DB_NAME='${{ JWT_SECRET }}' yashdani27/si_backend:latest
+        run: docker run -d -p 5000:5000 --name si-backend-container -e MONGODB='${{ secrets.MONGODB }}' -e DB_NAME='${{ secrets.DB_NAME }}' -e JWT_SECRET='${{ JWT_SECRET }}' yashdani27/si_backend:latest
