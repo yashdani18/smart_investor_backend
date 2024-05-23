@@ -8,4 +8,10 @@ TickerRouter.get("/", async (req, res) => {
   res.json(tickers);
 });
 
+TickerRouter.get("/:ticker", async (req, res) => {
+  const ticker = req.params.ticker;
+  const tickers = await Ticker.findOne({ ticker });
+  res.json(tickers);
+});
+
 export default TickerRouter;

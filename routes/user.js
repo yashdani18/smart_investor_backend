@@ -9,12 +9,12 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 
-const UsersRouter = express.Router();
+const UserRouter = express.Router();
 
-// @route       POST api/users
-// @desc        Register a user
+// @route       POST api/user
+// @desc        Create user
 // @access      Public
-UsersRouter.post(
+UserRouter.post(
   "/",
   [
     check("username", "Username needs to be a valid email").isEmail(),
@@ -31,12 +31,6 @@ UsersRouter.post(
     const { username, password, watchlist } = req.body;
 
     try {
-      /**
-       * Check if user with posted username exists in the database
-       * If yes, return 400 status to the user
-       * Else, encrypt password, and save user to database
-       * Respond to user with JWT token
-       */
       let user = await User.findOne({ username });
 
       if (user) {
@@ -57,14 +51,9 @@ UsersRouter.post(
         },
       };
 
-      //   jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 3600 }, (err, token) => {
-      //     if (err) throw err;
-      //     res.json({ token });
-      //   });
-
       jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ id: user.id, token });
       });
     } catch (error) {
       console.error(error.message);
@@ -73,7 +62,38 @@ UsersRouter.post(
   }
 );
 
-export default UsersRouter;
+// @route       GET api/user/:userId
+// @desc        Read user
+// @access      Admin
+UserRouter.get("/", async (req, res) => {
+  // 18 - 664837282d2fb889cae6c318
+  const users = await User.find();
+  console.log(users);
+  res.json(users);
+});
+
+// @route       PUT api/user
+// @desc        Update user
+// @access      Private
+UserRouter.put("/:userId", async (req, res) => {
+  console.log(req.body);
+  const { _id, watchlist } = req.body;
+  let doc = await User.findOneAndUpdate({ _id: _id }, { watchlist: watchlist }, null);
+  console.log(doc);
+  res.json({ msg: "Document updated" });
+});
+
+// @route       DELETE api/user
+// @desc        Delete user
+// @access      Admin
+UserRouter.delete("/:userId", async (req, res) => {
+  let userId = req.params.userId;
+  const response = await User.deleteOne({ _id: userId });
+  console.log(response);
+  res.json(response);
+});
+
+export default UserRouter;
 
 // {
 //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0ODM3MjgyZDJmYjg4OWNhZTZjMzE4In0sImlhdCI6MTcxNjAwODc0NSwiZXhwIjoxNzE2MDEyMzQ1fQ.yiNx0fFsyqGBB59SHJY6xYbqDMu2LFrCYqK9oRRj5Xk"

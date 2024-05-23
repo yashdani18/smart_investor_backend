@@ -24,7 +24,7 @@ AuthRouter.get("/", async (req, res) => {
     };
     res.json({ object });
   } catch (err) {
-    return res.status(400).json({ msg: "Invalid token" });
+    return res.status(403).json({ msg: "Invalid token" });
   }
 });
 
@@ -48,13 +48,13 @@ AuthRouter.post(
       let user = await User.findOne({ username });
 
       if (!user) {
-        return res.status(400).json({ msg: "Invalid credentials" });
+        return res.status(403).json({ msg: "Invalid credentials" });
       }
 
       const isMatch = await compare(password, user.password);
 
       if (!isMatch) {
-        return res.status(400).json({ msg: "Invalid credentials" });
+        return res.status(403).json({ msg: "Invalid credentials" });
       } else {
         console.log("Passwords match");
         const payload = {

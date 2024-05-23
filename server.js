@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import UsersRouter from "./routes/users.js";
+import UserRouter from "./routes/user.js";
 import AuthRouter from "./routes/auth.js";
 import TickerRouter from "./routes/ticker.js";
 import ProfileRouter from "./routes/profile.js";
@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 });
 
 // Define routes
-app.use("/api/users", UsersRouter);
+app.use("/api/user", UserRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/ticker", TickerRouter);
 app.use("/api/profile", ProfileRouter);

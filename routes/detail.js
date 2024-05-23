@@ -3,8 +3,9 @@ import Detail from "../models/Detail.js";
 
 const DetailRouter = express.Router();
 
-DetailRouter.get("/", (req, res) => {
-  res.send("Request received");
+DetailRouter.get("/", async (req, res) => {
+  let details = await Detail.find({});
+  res.json({ details });
 });
 
 DetailRouter.get("/:ticker", async (req, res) => {

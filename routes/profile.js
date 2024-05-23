@@ -8,12 +8,12 @@ ProfileRouter.get("/", (req, res) => {
   res.send("data");
 });
 
-ProfileRouter.post("/", async (req, res) => {
+ProfileRouter.put("/", async (req, res) => {
   console.log(req.body);
   const { _id, watchlist } = req.body;
   let doc = await User.findOneAndUpdate({ _id: _id }, { watchlist: watchlist }, null);
   console.log(doc);
-  res.send("Document updated (hopefully)");
+  res.send("Document updated");
 });
 
 export default ProfileRouter;
